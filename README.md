@@ -1,0 +1,1 @@
+# Multi-viewpoint-Patterns-and-Occlusions-Handling-Using-Hybrid-Features-for-Vehicle-Tracking
