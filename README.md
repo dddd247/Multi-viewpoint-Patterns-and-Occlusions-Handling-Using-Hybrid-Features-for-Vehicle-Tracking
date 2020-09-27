@@ -3,7 +3,7 @@
 ## Source code of vehicle tracking and Re-ID
 
 ### Authors
-Chih Wei Wu
+- [Chih Wei Wu](https://github.com/dddd247)
 
 
 ### Get Started
