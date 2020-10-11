@@ -134,7 +134,7 @@ ln = [ln[i[0] - 1] for i in net.getUnconnectedOutLayers()]
 
 ############################################################
 # calculate the number of comparison pair
-#  之前的ID需要比較的部分:
+#  :
 ############################################################
 compare_number = 0
 
@@ -272,7 +272,7 @@ while frame_counter <stop_frame:
     
     
     ##################
-    # 觀察 block size of car object
+    # observe block size of car object
     ##################
     if len(idxs_Cars) > 0:
         counter_large_car_counter = 0
@@ -976,7 +976,7 @@ while frame_counter <stop_frame:
                 temp_Reid_position[0,0,cars_id_number] = boxes[i][0] + round(boxes[i][2])
                 temp_Reid_position[0,1,cars_id_number] = boxes[i][1] + round(boxes[i][3])                
                 ##########
-                # 抽取特徵:
+                # extract features:
                 # 1. hsv
                 # 2. CNN
                 # 3. edge
@@ -1266,7 +1266,7 @@ while frame_counter <stop_frame:
     cv2.imwrite(crop_outpuut_save_path+str(frame_counter)+'.jpg',image)
     frame_counter = frame_counter + 1
 
-    print('新的 frame的 compare number!!!!!!!!!!!!!!:')
+    print('new frame compared number!!!!!!!!!!!!!!:')
     print(ReID_object.shape[3])
     compare_REID_number = ReID_object.shape[3]
 
