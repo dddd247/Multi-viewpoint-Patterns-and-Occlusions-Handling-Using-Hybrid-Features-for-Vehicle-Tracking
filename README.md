@@ -27,7 +27,7 @@
    * Day_normal_1 -> Day_normal_5.mp4
    * night_video_1 -> night_video_5.mp4
 5. Create a file and name it weight.
-   Download the object detector weight, yolov3.weight, and put it into the file 
+   Download the object detector weight, "yolov3.weight", and then put it into the file 
    
    
 #### Run
