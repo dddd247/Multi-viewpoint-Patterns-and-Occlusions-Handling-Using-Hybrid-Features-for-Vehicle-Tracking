@@ -47,7 +47,7 @@ import scipy.spatial.distance as dist
 
 
 ##########
-# 比較位置:
+# compare position:
 ##########
 def compare_position(position_1, position_2,h_frame,w_frame):
     #print('position_1 size')
@@ -60,13 +60,13 @@ def compare_position(position_1, position_2,h_frame,w_frame):
     y_2 = position_2[0,1]
     
     ###
-    # 中心距離差異
+    # compare the centers' distance
     ###
     center_dist = np.sqrt((x_1 - x_2) **2 + (y_1 - y_2) **2)
     #print('center_dist')
     #print(center_dist)
     ####
-    # 計算跟exp(0)的差異
+    # calculate the similarity score
     ####
     # type1:
     #output_dist_similarity = math.exp(1/center_dist) - math.exp(0)
@@ -90,11 +90,11 @@ def compare_position(position_1, position_2,h_frame,w_frame):
 
     return final_dist_sim
 #####
-# 抓取dominate color of car's ROI
+# get dominate color of car's ROI
 ##### 
 
 def get_dominant_color(image):
-    # 顏色轉換成RGB
+    # change to RGB
     #image = image.convert('RGB')
     image = Image.fromarray(image)
     image = image.convert('RGB')
@@ -103,12 +103,12 @@ def get_dominant_color(image):
     dominant_color = None
     for count,(r,g,b) in image.getcolors(image.size[0]*image.size[1]):
         
-        # 轉換成HSV --> 處理亮度問題:
+        # change to HSV --> to handle the problem of lightness:
         saturation = colorsys.rgb_to_hsv(r/255.0, g/255.0, b/255.0)[1]
         y = min(abs(r*2104+g*4130+b*802+4096+131072)>>13,235)
         y = (y-16.0)/(235-16)
         
-        # 忽略太亮的顏色
+        # ignore the brightness is too high
         if y > 0.9:
             continue
         score = (saturation+0.1)*count
@@ -119,7 +119,8 @@ def get_dominant_color(image):
     
     return dominant_color
 
-# 計算圖片的MSE
+##############
+# calculate the RMSE of images
 ###########
 def RMSE(img1, img2):
         #squared_diff = (img1 -img2) ** 2
@@ -152,7 +153,7 @@ def psnr_edge(edge_img1,edge_img2):
     return output_psnr_edge
     
 ################
-# 計算圖片的餘弦距離
+# calculate the cosine similarity score
 ##################
 def image_similarity_vectors_via_numpy(image1, image2):
     #image1 = get_thum(image1)
@@ -165,12 +166,12 @@ def image_similarity_vectors_via_numpy(image1, image2):
         #for pixel_tuple in image.getdata():
         vector.append(np.average(image))
         vectors.append(vector)
-        # linalg=linear（線性）+algebra（代數），norm則表示範數
-        # 求圖片的範數？？
+        # linalg=linear（）+algebra（），norm
+        # 
         norms.append(np.linalg.norm(vector, 2))
     a, b = vectors
     a_norm, b_norm = norms
-    # dot返回的是點積，對二維陣列（矩陣）進行計算
+    # 
     res = np.dot(a / a_norm, b / b_norm)
     return res    
     
@@ -375,7 +376,7 @@ class BNPReLU(nn.Module):
     
     
 #############
-# 計算HSV 距離:
+# calculate HSV's distance:
 #############
 def HSV_dist(image_1, image_2):
     
@@ -434,7 +435,7 @@ def sift_compare(image_1, image_2):
     #print(image_1.shape)
     
     #######
-    # 轉換成灰階:
+    # to gray level:
     #######
     #image_1= cv2.cvtColor(image_1.astype('uint8'),cv2.COLOR_BGR2GRAY)
     #image_2= cv2.cvtColor(image_2.astype('uint8'),cv2.COLOR_BGR2GRAY)
@@ -444,7 +445,7 @@ def sift_compare(image_1, image_2):
 
     
     
-    ## 創建 key points finder
+    ## build key points finder
     #finder = cv2.xfeatures2d.SIFT_create()
     finder = cv2.xfeatures2d.SURF_create()
     lowe_ratio = 0.75
@@ -486,7 +487,7 @@ def sift_compare(image_1, image_2):
 
 
 ##############
-# 主要顏色成分分數:
+# the similarity score of dominant color:
 ##############
 
 def dominant_color_score(RGB_1, RGB_2):
@@ -568,7 +569,7 @@ def backproject(source, target, levels = 2, scale = 1):
         hsv = cv2.cvtColor(source,  cv2.COLOR_BGR2HSV)
         hsvt = cv2.cvtColor(target, cv2.COLOR_BGR2HSV)
         # calculating object histogram
-        # cv2.calcHist(影像, 通道, 遮罩, 區間數量, 數值範圍)
+
         top_0 = 180
         roihist = cv2.calcHist([hsv],[0, 1], None, \
             [levels, levels], [0, top_0, 0, 256] )
@@ -609,16 +610,16 @@ def compare_salient_part(image1, image2):
     image2= cv2.cvtColor(image2.astype('uint8'),cv2.COLOR_BGR2RGB)
     
     
-    ### pyrMeanShiftFiltering 順序: 原始image, 物理空間半徑, 色彩空間半徑, 輸出圖像, 金字塔層數
+    ### pyrMeanShiftFiltering 
     sp = 10
     sr = 20
-    ## 2020818
+
     #image1 = cv2.resize(image1, dsize=(100, 100))
     #image2 = cv2.resize(image2, dsize=(100, 100))
     ## mean shift
     image1_mean_shift_result = cv2.pyrMeanShiftFiltering(image1, sp, sr, image1, 2)
     image2_mean_shift_result = cv2.pyrMeanShiftFiltering(image2, sp, sr, image2, 2)
-    ## backproject 2020818 因為 image size沒有 resize成 100 太慢了
+
     #image1_backproj = np.uint8(backproject(image1_mean_shift_result, image1_mean_shift_result, levels = 16))
     #image2_backproj = np.uint8(backproject(image2_mean_shift_result, image2_mean_shift_result, levels = 16))
     image1_backproj = np.uint8(backproject(image1_mean_shift_result, image1_mean_shift_result, levels = 8))
@@ -651,18 +652,14 @@ def compare_salient_part(image1, image2):
     image1_output_mask = refine_saliency_with_grabcut(image1,image1_saliency)
     image2_output_mask = refine_saliency_with_grabcut(image2,image2_saliency)
     #######
-    # 產生最後圖片-1:
+
     #######
     image_1_final_saliency = image1*image1_output_mask[:,:,np.newaxis]
     image_2_final_saliency = image1*image2_output_mask[:,:,np.newaxis]
     
+
     ######
-    # 先resize 20200818
-    ######
-    #image_1_final_saliency = cv2.resize(image_1_final_saliency, dsize=(40, 40))
-    #image_2_final_saliency = cv2.resize(image_2_final_saliency, dsize=(40, 40))
-    ######
-    # 比較 MSE
+    # compare MSE
     ######
     
     #print('image_1_final_saliency')
